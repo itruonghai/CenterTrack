@@ -10,3 +10,5 @@ nuscenes-devkit
 pyyaml
 motmetrics
 scikit-learn==0.22.2
+torch==1.4.0
+torchvision==0.5.0

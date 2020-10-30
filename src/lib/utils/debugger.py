@@ -17,6 +17,7 @@ class Debugger(object):
     self.imgs = {}
     self.theme = opt.debugger_theme
     self.plt = plt
+
     self.with_3d = False
     self.names = dataset.class_name
     self.out_size = 384 if opt.dataset == 'kitti' else 512
@@ -205,39 +206,40 @@ class Debugger(object):
     return
 
   def show_all_imgs(self, pause=False, Time=0):
-    if 1:
-      for i, v in self.imgs.items():
-        cv2.imshow('{}'.format(i), v)
-      if not self.with_3d:
-        cv2.waitKey(0 if pause else 1)
-      else:
-        max_range = np.array([
-          self.xmax-self.xmin, self.ymax-self.ymin, self.zmax-self.zmin]).max()
-        Xb = 0.5*max_range*np.mgrid[
-          -1:2:2,-1:2:2,-1:2:2][0].flatten() + 0.5*(self.xmax+self.xmin)
-        Yb = 0.5*max_range*np.mgrid[
-          -1:2:2,-1:2:2,-1:2:2][1].flatten() + 0.5*(self.ymax+self.ymin)
-        Zb = 0.5*max_range*np.mgrid[
-          -1:2:2,-1:2:2,-1:2:2][2].flatten() + 0.5*(self.zmax+self.zmin)
-        for xb, yb, zb in zip(Xb, Yb, Zb):
-          self.ax.plot([xb], [yb], [zb], 'w')
-        if self.opt.debug == 9:
-          self.plt.pause(1e-27)
-        else:
-          self.plt.show()
-    else:
-      self.ax = None
-      nImgs = len(self.imgs)
-      fig=plt.figure(figsize=(nImgs * 10,10))
-      nCols = nImgs
-      nRows = nImgs // nCols
-      for i, (k, v) in enumerate(self.imgs.items()):
-        fig.add_subplot(1, nImgs, i + 1)
-        if len(v.shape) == 3:
-          plt.imshow(cv2.cvtColor(v, cv2.COLOR_BGR2RGB))
-        else:
-          plt.imshow(v)
-      plt.show()
+    # if 1:
+    #   for i, v in self.imgs.items():
+    #     cv2.imshow('{}'.format(i), v)
+    #   if not self.with_3d:
+    #     cv2.waitKey(0 if pause else 1)
+    #   else:
+    #     max_range = np.array([
+    #       self.xmax-self.xmin, self.ymax-self.ymin, self.zmax-self.zmin]).max()
+    #     Xb = 0.5*max_range*np.mgrid[
+    #       -1:2:2,-1:2:2,-1:2:2][0].flatten() + 0.5*(self.xmax+self.xmin)
+    #     Yb = 0.5*max_range*np.mgrid[
+    #       -1:2:2,-1:2:2,-1:2:2][1].flatten() + 0.5*(self.ymax+self.ymin)
+    #     Zb = 0.5*max_range*np.mgrid[
+    #       -1:2:2,-1:2:2,-1:2:2][2].flatten() + 0.5*(self.zmax+self.zmin)
+    #     for xb, yb, zb in zip(Xb, Yb, Zb):
+    #       self.ax.plot([xb], [yb], [zb], 'w')
+    #     if self.opt.debug == 9:
+    #       self.plt.pause(1e-27)
+    #     else:
+    #       self.plt.show()
+    # else:
+    #   self.ax = None
+    #   nImgs = len(self.imgs)
+    #   fig=plt.figure(figsize=(nImgs * 10,10))
+    #   nCols = nImgs
+    #   nRows = nImgs // nCols
+    #   for i, (k, v) in enumerate(self.imgs.items()):
+    #     fig.add_subplot(1, nImgs, i + 1)
+    #     if len(v.shape) == 3:
+    #       plt.imshow(cv2.cvtColor(v, cv2.COLOR_BGR2RGB))
+    #     else:
+    #       plt.imshow(v)
+    #   plt.show()
+    pass 
 
   def save_img(self, imgId='default', path='./cache/debug/'):
     cv2.imwrite(path + '{}.png'.format(imgId), self.imgs[imgId])
